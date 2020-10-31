@@ -46,24 +46,29 @@ To run the unit test, go to the project root and run
 phpunit
 ```
 
-**Docker Installation**
+## Docker Installation
+**Run the following command in the root project**
 ```
 ./develop up -d
 ./develop composer install
 ./develop npm install
+```
+**Compile Assets**
+```
 ./develop npm run prod
-
-Update .env file
-
+```
+**Update .env file**
+```
 DB_HOST=mysql
 DB_DATABASE=todo
 DB_USERNAME=root
 DB_PASSWORD=secret
 
 ./develop art migrate
+```
 
-To run unit test
-
+**Run PHPUnit test**
+```
 ./develop test
 ```
 
