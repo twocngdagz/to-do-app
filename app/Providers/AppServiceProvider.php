@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Domain\ToDo;
+use App\Domain\TodoManager;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +15,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(ToDo::class, function () {
+            return new TodoManager();
+        });
     }
 
     /**

@@ -48,4 +48,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(Stat::class);
     }
+
+    public function logStat()
+    {
+        $this->stats()->create([
+            'incomplete' => auth()->user()->tasks()->where('is_done', false)->count()
+        ]);
+    }
 }

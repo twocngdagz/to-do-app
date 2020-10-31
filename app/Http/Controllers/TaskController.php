@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Domain\ToDo;
 use App\Task;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
@@ -10,6 +11,13 @@ use Illuminate\Support\Facades\Log;
 
 class TaskController extends Controller
 {
+    protected $manager;
+
+    public function __construct(ToDo $manager)
+    {
+        $this->manager = $manager;
+    }
+
     public function get()
     {
         return auth()->user()->tasks;
@@ -17,19 +25,12 @@ class TaskController extends Controller
 
     public function toggle(Task $task)
     {
-        $task->is_done = !$task->is_done;
-        $task->save();
-
-        auth()->user()->stats()->create([
-            'incomplete' => auth()->user()->tasks()->where('is_done', false)->count()
-        ]);
-
-        return $task;
+        return $this->manager->toggle($task->id);
     }
 
     public function delete(Task $task)
     {
-        $task->delete();
+        return $this->manager->delete($task->id);
     }
 
     public function inComplete()
@@ -37,23 +38,13 @@ class TaskController extends Controller
         $dataCollection = collect(CarbonPeriod::create(Carbon::now()->subHour()->subSeconds(60)->startOfMinute(), '1 minute', Carbon::now()->startOfMinute()))->map(function ($period) {
 
             $periodStat = auth()->user()->stats->filter(function ($stat) use ($period) {
-                $dateFrom = $period->toDateTimeString();
-                $dateTo = $period->copy()->addSecond(60)->toDateTimeString();
-                $base = $stat->created_at->toDateTimeString();
+                return $stat->created_at->between($period, $period->copy()->addSecond(60));
+            })->last();
 
-
-                $isTrue = Carbon::parse($base)->between(Carbon::parse($dateFrom), Carbon::parse($dateTo));
-
-                Log::info(print_r(compact('dateFrom', 'dateTo', 'base', 'isTrue'), true));
-
-                return $isTrue;
-            });
-
-            if ($periodStat->count() > 0) {
-                Log::info(print_r($periodStat->toArray(), true));
+            if ($periodStat) {
                 return [
                     'label' => $period->format('g:i:s a'),
-                    'count' => $periodStat->last()->incomplete ?? 0
+                    'count' => $periodStat->incomplete ?? 0
                 ];
             }
         })->toArray();
@@ -78,18 +69,6 @@ class TaskController extends Controller
 
     public function create(Request $request)
     {
-        $task = Task::create([
-            'description' => $request->get('task'),
-            'is_done' => false,
-            'user_id' => auth()->user()->id
-        ]);
-
-        if ($task) {
-            $request->user()->stats()->create([
-                'incomplete' => $request->user()->tasks()->where('is_done', false)->count()
-            ]);
-
-            return $task;
-        }
+        return $this->manager->add($request->all(), $request->user()->id);
     }
 }
