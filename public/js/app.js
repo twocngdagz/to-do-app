@@ -89735,6 +89735,7 @@ var addTask = function addTask(_ref2, data) {
   return new Promise(function (resolve, reject) {
     window.axios.post('/tasks', data).then(function (response) {
       commit(_mutation_types__WEBPACK_IMPORTED_MODULE_0__["ADD_TASK"], response.data);
+      dispatch('fetchStats');
       resolve(response);
     })["catch"](function (err) {
       reject(err);
@@ -89748,6 +89749,7 @@ var toggleTask = function toggleTask(_ref3, task) {
   return new Promise(function (resolve, reject) {
     window.axios.get("/tasks/".concat(task.id)).then(function (response) {
       commit(_mutation_types__WEBPACK_IMPORTED_MODULE_0__["TOGGLE_TASK"], response.data);
+      dispatch('fetchStats');
       resolve(response);
     })["catch"](function (err) {
       reject(err);
@@ -89761,6 +89763,7 @@ var removeTask = function removeTask(_ref4, task) {
   return new Promise(function (resolve, reject) {
     window.axios["delete"]("/tasks/".concat(task.id)).then(function (response) {
       commit(_mutation_types__WEBPACK_IMPORTED_MODULE_0__["DELETE_TASK"], task.id);
+      dispatch('fetchStats');
       resolve(response);
     })["catch"](function (err) {
       reject(err);
