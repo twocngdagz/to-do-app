@@ -76,4 +76,8 @@ DB_PASSWORD=secret
 http://localhost:8000
 Login or Register and use the app
 ```
+**To shutdown**
+```
+./develop down
+```
 
