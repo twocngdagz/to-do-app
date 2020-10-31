@@ -65,12 +65,12 @@ class TaskController extends Controller
                     'label' => 'Incomplete Task',
                     'pointRadius', 10,
                     'data' => array_column($dataCollection, 'count'),
-                    'borderColor' => '#5E9732',
-                    'backgroundColor' => '#c7ecea',
-                    'pointColor' => '#226D82',
+                    'borderColor' => '#121EE9',
+                    'backgroundColor' => '#966bcf',
+                    'pointColor' => '#3398ED',
                     'pointBorderWidth' => 2,
-                    'pointBorderColor' => '#5E9732',
-                    'strokeColor' => 'rgba(151,187,205,1)'
+                    'pointBorderColor' => '#412145',
+                    'strokeColor' => 'rgba(128,111,213,1)'
                 ]
             ]
         ];
