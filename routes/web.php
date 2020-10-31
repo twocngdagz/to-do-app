@@ -19,11 +19,13 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('tasks', 'TaskController@get');
-Route::post('/tasks', 'TaskController@create');
-Route::get('/tasks/{task}', 'TaskController@toggle');
-Route::delete('/tasks/{task}', 'TaskController@delete');
+    Route::get('tasks', 'TaskController@get');
+    Route::post('/tasks', 'TaskController@create');
+    Route::get('/tasks/{task}', 'TaskController@toggle');
+    Route::delete('/tasks/{task}', 'TaskController@delete');
 
-Route::get('stats', 'TaskController@inComplete');
+    Route::get('stats', 'TaskController@inComplete');
+});
