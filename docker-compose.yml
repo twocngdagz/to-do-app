@@ -1,0 +1,49 @@
+version: '2'
+services:
+  app:
+    build:
+      context: ./docker/app
+      dockerfile: Dockerfile
+    image: todo/app
+    volumes:
+     - .:/var/www/html
+    ports:
+     - "${APP_PORT}:80"
+    networks:
+     - sdnet
+  node:
+    build:
+      context: ./docker/node
+      dockerfile: Dockerfile
+    image: todo/node
+    volumes:
+     - .:/var/www/html
+    networks:
+     - sdnet
+  mysql:
+    image: mysql:5.7.32
+    ports:
+     - "${MYSQL_PORT}:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "secret"
+      MYSQL_DATABASE: "todo"
+      MYSQL_USER: "todo-user"
+      MYSQL_PASSWORD: "secret"
+    volumes:
+     - mysqldata:/var/lib/mysql
+    networks:
+     - sdnet
+  redis:
+    image: redis:alpine
+    volumes:
+     - redisdata:/data
+    networks:
+     - sdnet
+networks:
+  sdnet:
+    driver: "bridge"
+volumes:
+  mysqldata:
+    driver: "local"
+  redisdata:
+    driver: "local"

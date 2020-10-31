@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+
+# Set environment variables for dev
+export APP_PORT=${APP_PORT:-8000}
+export MYSQL_PORT=${MYSQL_PORT:-33060}
+
+COMPOSE="docker-compose"
+
+if [ $# -gt 0 ];then
+	if [ "$1" == "art" ];then
+		shift 1
+		$COMPOSE run --rm -w /var/www/html app php artisan "$@"
+	elif [ "$1" == "composer" ];then
+		shift 1
+		$COMPOSE run --rm -w /var/www/html app composer "$@"
+	elif [ "$1" == "test" ];then
+		shift 1
+		$COMPOSE run --rm -w /var/www/html app ./vendor/bin/phpunit "$@"
+	elif [ "$1" == "npm" ];then
+		shift 1
+		$COMPOSE run --rm -w /var/www/html node npm "$@"
+	else
+		$COMPOSE "$@"
+	fi
+else
+	$COMPOSE ps
+fi
