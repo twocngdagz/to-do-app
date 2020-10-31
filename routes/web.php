@@ -25,3 +25,5 @@ Route::get('tasks', 'TaskController@get');
 Route::post('/tasks', 'TaskController@create');
 Route::get('/tasks/{task}', 'TaskController@toggle');
 Route::delete('/tasks/{task}', 'TaskController@delete');
+
+Route::get('stats', 'TaskController@inComplete');

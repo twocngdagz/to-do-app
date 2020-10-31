@@ -1910,11 +1910,13 @@ module.exports = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_chartjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-chartjs */ "./node_modules/vue-chartjs/es/index.js");
 
+var reactiveProp = vue_chartjs__WEBPACK_IMPORTED_MODULE_0__["mixins"].reactiveProp;
 /* harmony default export */ __webpack_exports__["default"] = ({
+  mixins: [reactiveProp],
   "extends": vue_chartjs__WEBPACK_IMPORTED_MODULE_0__["Line"],
-  props: ['chartdata', 'options'],
+  props: ['chartData', 'options'],
   mounted: function mounted() {
-    this.renderChart(this.chartdata, this.options);
+    this.renderChart(this.chartData, this.options);
   }
 });
 
@@ -1999,7 +2001,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      task: ""
+      task: "",
+      options: {
+        responsive: true,
+        maintainAspectRatio: false
+      }
     };
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('task', ['tasks', 'stats'])),
@@ -75728,7 +75734,11 @@ var render = function() {
       "div",
       { staticClass: "card-body" },
       [
-        _c("chart", { attrs: { chartdata: _vm.stats } }),
+        _vm.stats
+          ? _c("chart", {
+              attrs: { "chart-data": _vm.stats, options: _vm.options }
+            })
+          : _vm._e(),
         _vm._v(" "),
         _c("h4", { staticClass: "card-title" }, [_vm._v("My To Do")]),
         _vm._v(" "),

@@ -1,7 +1,7 @@
 <template>
     <div class="card px-3">
         <div class="card-body">
-            <chart :chartdata="stats"></chart>
+            <chart v-if="stats" :chart-data="stats" :options="options"></chart>
             <h4 class="card-title">My To Do</h4>
             <div class="add-items d-flex">
                 <input type="text" class="form-control todo-list-input" placeholder="What do you need to do today?" v-model="task" ref="input">
@@ -31,13 +31,17 @@
         data() {
             return {
                 task: "",
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
             }
         },
         computed: {
             ...mapGetters('task', [
                 'tasks',
                 'stats'
-            ])
+            ]),
         },
         methods: {
             ...mapActions('task', [
