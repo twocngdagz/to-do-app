@@ -71,4 +71,9 @@ DB_PASSWORD=secret
 ```
 ./develop test
 ```
+**Open Browser**
+```
+http://localhost:8000
+Login or Register and use the app
+```
 
