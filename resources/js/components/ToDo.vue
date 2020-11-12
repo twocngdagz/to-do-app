@@ -55,6 +55,8 @@
                 if (this.task != "") {
                     this.addTask({
                         task: this.task
+                    }).catch(err => {
+                        console.log(err.response)
                     })
                     this.task = ""
                     this.$refs.input.focus()

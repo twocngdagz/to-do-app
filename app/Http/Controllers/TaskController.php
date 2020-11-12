@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Domain\ToDo;
+use App\Http\Requests\TodoRequest;
 use App\Task;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
@@ -67,7 +68,7 @@ class TaskController extends Controller
         ];
     }
 
-    public function create(Request $request)
+    public function create(TodoRequest $request)
     {
         return $this->manager->add($request->all(), $request->user()->id);
     }
